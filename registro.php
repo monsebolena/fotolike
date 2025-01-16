@@ -1,3 +1,17 @@
+<?php
+if(isset($_POST["nombre"])) {
+    include("conexiondb.php");
+    $sql = "INSERT INTO usuarios (nombre, email, password) VALUES (:nombre, :email, :password)";
+    $stm = $conexion->prepare($sql);
+    $stm ->bindParam(":nombre", $_POST["nombre"]);
+    $stm -> bindParam(":email", $_POST["email"]);
+
+    $hashed_password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $stm->bindParam("password", $hashed_password);  
+
+    $stm->execute();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,9 +27,6 @@
             <h2>Registrarse</h2>
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" id="nombre" required>
-
-            <label for="apellido">Apellido</label>
-            <input type="text" name="apellido" id="apellido" required>
 
             <label for="email">Email</label>
             <input type="email" name="email" id="email" required>
