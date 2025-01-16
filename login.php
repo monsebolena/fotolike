@@ -8,6 +8,9 @@ if(isset($_POST["email"])){
     $usuario=$stm->fetch();
     if($usuario){
         if(password_verify($_POST["password"], $usuario["password"])){
+            session_start();
+            $_SESSION["idusuario"] = $usuario["id"];
+            $_SESSION["nombre"] = $usuario["nombre"];
             echo "Bienvenido";
             exit();
         }else{
